@@ -1,6 +1,8 @@
 #ifndef LIBBASIC_H
 #define LIBBASIC_H
 
+#include <stddef.h> // for offsetof
+
 #ifndef STR
 #define __tostr(x) #x
 #define STR(x) __tostr(x)
@@ -16,6 +18,16 @@
 
 #ifndef ARRAY_SIZE
 #define ARRAY_SIZE(a) (sizeof(a) / sizeof(a[0]))
+#endif
+
+#ifndef container_of
+#define container_of(ptr, type, member) \
+	({ \
+		const typeof( ((type*)0)->member ) \
+		* __mptr = ((void*)(ptr)); \
+		(type*)( (char*)__mptr - \
+		offsetof(type, member) ); \
+	})
 #endif
 
 #ifndef MIN
